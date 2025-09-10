@@ -1,31 +1,5 @@
 from pathlib import Path
-import requests
-
-
-def fetch_animal_data(animal_name, api_key):
-    """
-    Fetch animal data from API Ninjas (Animals API) for a given animal name.
-
-    Args:
-        animal_name (str): Common name or partial name of the animal to search.
-        api_key (str): Your valid API Ninjas key.
-
-    Returns:
-        list[dict]: Parsed JSON list of animal data, or empty list on error.
-    """
-    url = "https://api.api-ninjas.com/v1/animals"
-    params = {'name': animal_name}
-    headers = {'X-Api-Key': api_key}
-
-    try:
-        response = requests.get(url, params=params, headers=headers, timeout=10)
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print(f"❌ API error {response.status_code}: {response.text}")
-    except requests.RequestException as error_network:
-        print(f"❌ Network error: {error_network}")
-    return []
+import data_fetcher
 
 
 def load_template(template_path):
@@ -104,14 +78,13 @@ def save_html(output_path, content):
 
 
 if __name__ == "__main__":
-    api_key = "MrMUawMRUvQsI/dVxqEXdQ==FMVMuB2VCKdBcIk4"
     template_file = "animals_template.html"
     output_file = "animals.html"
 
     animal_name = input("🔍 Enter the name of an animal: ").strip()
 
     # Fetch data
-    animal_data = fetch_animal_data(animal_name, api_key)
+    animal_data = data_fetcher.fetch_data(animal_name)
     if not animal_data:
         print("⚠️ No animal data received; HTML will be empty.")
 
