@@ -56,6 +56,16 @@ def generate_cards_html(animal_data):
     Returns:
         str: HTML string containing <li> elements for each animal.
     """
+    if not animal_data:
+        return f"""
+            <li class="cards__item">
+              <h2 class="card__title">No results</h2>
+              <div class="card__text">
+                <p>❌ No animal with the name "<strong>{animal_name}
+                </strong>" was found. ❌</p>
+              </div>
+            </li>
+            """
     html_output = ""
     for data in animal_data:
         info = {
