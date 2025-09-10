@@ -47,6 +47,7 @@ def load_template(template_path):
 def generate_cards_html(animal_data):
     """
     Dynamically generate HTML for each animal in the list.
+    Only includes: Name, Diet, Locations, and Type.
 
     Args:
         animal_data (list[dict]): List of animal data dictionaries.
@@ -58,13 +59,15 @@ def generate_cards_html(animal_data):
     for data in animal_data:
         info = {
             "Name": data.get("name", "Unknown"),
-            **data.get("characteristics", {}),
+            "Diet": data.get("characteristics", {}).get("diet"),
+            "Locations": ", ".join(data.get("locations", []))
+            if data.get("locations") else None,
+            "Type": data.get("characteristics", {}).get("type")
+
         }
-        if locations := data.get("locations"):
-            info["Locations"] = ", ".join(locations)
 
         html_output += '<li class="cards__item">\n'
-        html_output += f'  <h2 class="card__title">{info.get("Name")}</h2>\n'
+        html_output += f'  <h2 class="card__title">{info["Name"]}</h2>\n'
         html_output += '  <div class="card__text">\n'
         for key, value in info.items():
             if key != "Name" and value:
