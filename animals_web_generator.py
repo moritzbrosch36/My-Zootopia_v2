@@ -1,5 +1,6 @@
 import json
 
+#1
 def load_data(file_path):
     """
     Load a JSON file and return its contents as a Python object.
