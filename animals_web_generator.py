@@ -89,27 +89,24 @@ def save_html(output_path, content):
         print(f"❌ Could not save HTML: {error_HTML}")
 
 if __name__ == "__main__":
-    """
-    Main entry point:
-      1. Load animal data from JSON file.
-      2. Generate HTML card markup.
-      3. Load the external HTML template.
-      4. Insert cards into the template at {{cards}} placeholder.
-      5. Save the final HTML to 'animals.html'.
-    """
-    # Load data
-    animal_data = load_data("../My-Zootopia/animals_data.json")
+    api_key = "MrMUawMRUvQsI/dVxqEXdQ==FMVMuB2VCKdBcIk4"
+    animal_name = "fox"
+    template_file = "animals_template.html"
+    output_file = "animals.html"
+
+    # Fetch data
+    animal_data = fetch_animal_data(animal_name, api_key)
+    if not animal_data:
+        print("⚠️ No animal data received; HTML will be empty.")
+
+    # Generate the HTML cards
     cards_html = generate_cards_html(animal_data)
 
-    # Load template
-    with open("animals_template.html", "r", encoding="utf-8") as f:
-        template = f.read()
+    # Load the template
+    template = load_template(template_file)
 
-    # Replace placeholder with generated cards
+    # Insert generated cards
     final_html = template.replace("{{cards}}", cards_html)
 
     # Save final HTML
-    with open("animals.html", "w", encoding="utf-8") as f:
-        f.write(final_html)
-
-    print("✅ HTML has been generated and saved to animals.html")
+    save_html(output_file, final_html)
