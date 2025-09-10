@@ -27,6 +27,24 @@ def fetch_animal_data(animal_name, api_key):
     return []
 
 
+
+def load_template(template_path):
+    """
+    Load the HTML template from a file.
+
+    Args:
+        template_path (str): Path to the template file.
+
+    Returns:
+        str: Template content, or a minimal fallback HTML if loading fails.
+    """
+    try:
+        return Path(template_path).read_text(encoding = "utf-8")
+    except FileNotFoundError:
+        print(f"❌ Template '{template_path}' not found.")
+        return "<html><body><h1>Error: template missing</h1></body></html>"
+
+
 def generate_cards_html(animal_data):
     """
     Generate HTML markup for a list of animal cards.
