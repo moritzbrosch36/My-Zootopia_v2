@@ -1,26 +1,30 @@
-import json
+from pathlib import Path
+import requests
 
-#1
-def load_data(file_path):
+def fetch_animal_data(animal_name, api_key):
     """
-    Load a JSON file and return its contents as a Python object.
+    Fetch animal data from API Ninjas (Animals API) for a given animal name.
 
     Args:
-        file_path (str): Path to the JSON file.
+        animal_name (str): Common name or partial name of the animal to search.
+        api_key (str): Your valid API Ninjas key.
 
     Returns:
-        list[dict]: Parsed JSON data as a list of dictionaries.
-                    Returns an empty list if the file is missing or invalid.
+        list[dict]: Parsed JSON list of animal data, or empty list on error.
     """
+    url = "https://api.api-ninjas.com/v1/animals"
+    params = {'name': animal_name}
+    headers = {'X-Api-Key': api_key}
+
     try:
-        with open(file_path, "r", encoding="utf-8") as handle:
-            return json.load(handle)
-    except FileNotFoundError:
-        print(f"❌ Error: File '{file_path}' not found.")
-        return []
-    except json.JSONDecodeError:
-        print(f"❌ Error: File '{file_path}' is not valid JSON.")
-        return []
+        response = requests.get(url, params=params, headers=headers, timeout=10)
+        if response.status_code == 200:
+            return response.json()
+        else:
+            print(f"❌ API error {response.status_code}: {response.text}")
+    except requests.RequestException as e:
+        print(f"❌ Network error: {e}")
+    return []
 
 
 def generate_cards_html(animal_data):
