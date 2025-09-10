@@ -2,22 +2,22 @@ import requests
 
 api_key = "MrMUawMRUvQsI/dVxqEXdQ==FMVMuB2VCKdBcIk4"
 
+
 def fetch_data(animal_name):
     """
     Fetches the animals data for the animal 'animal_name'.
-    Returns: a list of animals, each animal is a dictionary:
-    {
-        'name': ...,
-        'taxonomy': {
-        ...
-        },
-        'locations': [
-        ...
-        ],
-        'characteristics': {
-        ...
-        },
-    }
+
+    Args:
+        animal_name (str): The name of the animal to search for.
+
+    Returns:
+        list[dict]: A list of animals, where each animal is a dictionary:
+            {
+                'name': ...,
+                'taxonomy': {...},
+                'locations': [...],
+                'characteristics': {...},
+            }
     """
     url = "https://api.api-ninjas.com/v1/animals"
     params = {'name': animal_name}
