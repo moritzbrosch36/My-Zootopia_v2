@@ -1,6 +1,7 @@
 from pathlib import Path
 import requests
 
+
 def fetch_animal_data(animal_name, api_key):
     """
     Fetch animal data from API Ninjas (Animals API) for a given animal name.
@@ -22,8 +23,8 @@ def fetch_animal_data(animal_name, api_key):
             return response.json()
         else:
             print(f"❌ API error {response.status_code}: {response.text}")
-    except requests.RequestException as e:
-        print(f"❌ Network error: {e}")
+    except requests.RequestException as error_network:
+        print(f"❌ Network error: {error_network}")
     return []
 
 
@@ -91,11 +92,13 @@ def save_html(output_path, content):
     except Exception as error_HTML:
         print(f"❌ Could not save HTML: {error_HTML}")
 
+
 if __name__ == "__main__":
     api_key = "MrMUawMRUvQsI/dVxqEXdQ==FMVMuB2VCKdBcIk4"
-    animal_name = "fox"
     template_file = "animals_template.html"
     output_file = "animals.html"
+
+    animal_name = input("🔍 Enter the name of an animal: ").strip()
 
     # Fetch data
     animal_data = fetch_animal_data(animal_name, api_key)
