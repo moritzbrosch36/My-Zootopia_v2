@@ -27,7 +27,6 @@ def fetch_animal_data(animal_name, api_key):
     return []
 
 
-
 def load_template(template_path):
     """
     Load the HTML template from a file.
@@ -47,36 +46,30 @@ def load_template(template_path):
 
 def generate_cards_html(animal_data):
     """
-    Generate HTML markup for a list of animal cards.
-
-    Each card contains:
-      - Name (as the card title)
-      - Diet
-      - Locations
-      - Type
+    Dynamically generate HTML for each animal in the list.
 
     Args:
-        animal_data (list[dict]): List of animal dictionaries.
+        animal_data (list[dict]): List of animal data dictionaries.
 
     Returns:
-        str: HTML string with <li> elements for all animals.
+        str: HTML string containing <li> elements for each animal.
     """
     html_output = ""
     for data in animal_data:
         info = {
-            "Name": data.get("name"),
-            "Diet": data.get("characteristics", {}).get("diet"),
-            "Locations": ", ".join(data.get("locations", [])) if data.get("locations") else None,
-            "Type": data.get("characteristics", {}).get("type")
+            "Name": data.get("name", "Unknown"),
+            **data.get("characteristics", {}),
         }
+        if locations := data.get("locations"):
+            info["Locations"] = ", ".join(locations)
 
         html_output += '<li class="cards__item">\n'
-        html_output += f'  <h2 class="card__title">{info["Name"]}</h2>\n'
+        html_output += f'  <h2 class="card__title">{info.get("Name")}</h2>\n'
         html_output += '  <div class="card__text">\n'
         for key, value in info.items():
-            if key != "Name" and value is not None:
+            if key != "Name" and value:
                 html_output += f'    <p><strong>{key}:</strong> {value}</p>\n'
-        html_output += "  </div>\n</li>\n"
+        html_output += '  </div>\n</li>\n'
 
     return html_output
 
