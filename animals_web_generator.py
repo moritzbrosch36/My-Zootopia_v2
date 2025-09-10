@@ -74,6 +74,20 @@ def generate_cards_html(animal_data):
     return html_output
 
 
+def save_html(output_path, content):
+    """
+    Save the final HTML content to a file.
+
+    Args:
+        output_path (str): File path to write HTML content into.
+        content (str): Complete HTML markup.
+    """
+    try:
+        Path(output_path).write_text(content, encoding = "utf-8")
+        print(f"✅ HTML successfully saved to {output_path}")
+    except Exception as error_HTML:
+        print(f"❌ Could not save HTML: {error_HTML}")
+
 if __name__ == "__main__":
     """
     Main entry point:
